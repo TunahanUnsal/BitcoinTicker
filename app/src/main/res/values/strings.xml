@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Template Project</string>
+    <string name="app_name">Bitcoin Ticker</string>
+    <string name="version">V</string>
+    <string name="powered_by">Powered by</string>
 </resources>

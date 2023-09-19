@@ -1,5 +1,7 @@
 [versions]
 agp = "8.2.0-alpha16"
+firebase-auth = "22.1.2"
+github-glide = "4.3.1"
 glide = "4.15.1"
 hilt-android = "2.47"
 hilt-compiler = "2.44"
@@ -16,7 +18,9 @@ retrofit = "2.3.0"
 [libraries]
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+firebase-auth = { module = "com.google.firebase:firebase-auth", version.ref = "firebase-auth" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+glide-v431 = { module = "com.github.bumptech.glide:glide", version.ref = "github-glide" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-compiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
