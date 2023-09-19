@@ -13,7 +13,7 @@ class ConverterFactory constructor(val factory: GsonConverterFactory) : Converte
         type: Type,
         annotations: Array<out Annotation>,
         retrofit: Retrofit
-    ): Converter<ResponseBody, *>? {
+    ): Converter<ResponseBody, *> {
         val converter = factory.responseBodyConverter(type, annotations, retrofit)
         return ResponseBodyConverter(converter as Converter<ResponseBody, ApiResponse>, type)
     }
