@@ -20,11 +20,9 @@
         android:theme="@style/Theme.TempleteProject"
         tools:targetApi="tiramisu">
 
-
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true"
-            android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +32,6 @@
 
         <activity
             android:name=".ui.home.HomeActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.list.ListActivity"
@@ -46,7 +43,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
 
     </application>
 

@@ -1,11 +1,13 @@
 package com.example.project.ui.detail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.project.R
@@ -31,15 +33,25 @@ class DetailActivityVM @Inject constructor(
         name: String,
         algorithm: TextView,
         description: TextView,
-        imageView: ImageView
+        imageView: ImageView,
+        swipeRefreshLayout: SwipeRefreshLayout
     ) {
         coinByIdUseCase.invoke(
             parameter = name
         ).onStart {
             Log.i("TAG", "loginFun: onStart")
+            activity.runOnUiThread {
+                swipeRefreshLayout.isRefreshing = true
+            }
         }.catch {
             Log.i("TAG", "loginFun: catch $it")
+            activity.runOnUiThread {
+                swipeRefreshLayout.isRefreshing = false
+            }
         }.collect {
+            activity.runOnUiThread {
+                swipeRefreshLayout.isRefreshing = false
+            }
             Log.i("TAG", "loginFun: collect $it")
             uiSetterCoin(activity, it, algorithm, description)
             if(it.logo!=null){
@@ -80,6 +92,7 @@ class DetailActivityVM @Inject constructor(
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun uiSetterPrice(
         activity: Activity,
         priceDetail: PriceModel,
@@ -87,9 +100,9 @@ class DetailActivityVM @Inject constructor(
         change: TextView
     ) {
         activity.runOnUiThread {
-            price.text = priceDetail.close.toString()
+            price.text =  "%.2f".format( priceDetail.close) + "$"
             if (priceDetail.high != null && priceDetail.low != null) {
-                change.text = (priceDetail.high!!.minus(priceDetail.low!!)).toString()
+                change.text = "%.2f".format(priceDetail.high!!.minus(priceDetail.low!!)) + "$"
             }
         }
     }
@@ -97,7 +110,6 @@ class DetailActivityVM @Inject constructor(
     private fun imageSetter(url: String, imageView: ImageView, context: Context,activity: Activity) {
         val options: RequestOptions = RequestOptions()
             .centerCrop()
-            .placeholder(R.drawable.binance)
             .error(R.drawable.binance)
 
         activity.runOnUiThread {

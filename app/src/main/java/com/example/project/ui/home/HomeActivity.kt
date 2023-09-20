@@ -90,4 +90,13 @@ class HomeActivity : AppCompatActivity() {
             }
     }
 
+    override fun onStart() {
+        super.onStart()
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            startActivity(Intent(this@HomeActivity, ListActivity::class.java).setAction(""))
+        }
+    }
+
 }

@@ -25,7 +25,6 @@ class DetailActivity : AppCompatActivity() {
 
         val name: String = intent.getStringExtra("name").toString()
 
-
         CoroutineScope(Dispatchers.IO).launch {
             val response = async {
                 viewModel.coinDetailFun(
@@ -34,7 +33,8 @@ class DetailActivity : AppCompatActivity() {
                     name,
                     binding.algorithm,
                     binding.description,
-                    binding.imageView
+                    binding.imageView,
+                    binding.swipeRefresh
                 )
                 viewModel.priceDetailFun(
                     this@DetailActivity,
@@ -44,7 +44,38 @@ class DetailActivity : AppCompatActivity() {
                 )
             }
             response.await()
+            runOnUiThread {
+                binding.swipeRefresh.isRefreshing = false
+            }
         }
 
+        binding.swipeRefresh.setOnRefreshListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = async {
+                    viewModel.coinDetailFun(
+                        this@DetailActivity,
+                        applicationContext,
+                        name,
+                        binding.algorithm,
+                        binding.description,
+                        binding.imageView,
+                        binding.swipeRefresh
+                    )
+                    viewModel.priceDetailFun(
+                        this@DetailActivity,
+                        name,
+                        binding.price,
+                        binding.priceChange
+                    )
+                }
+                response.await()
+                runOnUiThread {
+                    binding.swipeRefresh.isRefreshing = false
+                }
+            }
+
+
+        }
     }
+
 }

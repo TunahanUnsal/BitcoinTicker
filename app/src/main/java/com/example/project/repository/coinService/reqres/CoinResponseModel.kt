@@ -46,8 +46,8 @@ data class Tags(
 
     @SerializedName("id") var id: String? = null,
     @SerializedName("name") var name: String? = null,
-    @SerializedName("coin_counter") var coinCounter: Int? = null,
-    @SerializedName("ico_counter") var icoCounter: Int? = null
+    @SerializedName("coin_counter") var coinCounter: Long? = null,
+    @SerializedName("ico_counter") var icoCounter: Long? = null
 
 )
 
@@ -92,7 +92,7 @@ data class PriceModel(
     @SerializedName("high") var high: Double? = null,
     @SerializedName("low") var low: Double? = null,
     @SerializedName("close") var close: Double? = null,
-    @SerializedName("volume") var volume: Int? = null,
-    @SerializedName("market_cap") var marketCap: Int? = null
+    @SerializedName("volume") var volume: Long? = null,
+    @SerializedName("market_cap") var marketCap: Long? = null
 
 )
