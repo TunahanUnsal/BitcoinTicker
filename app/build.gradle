@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id("com.google.gms.google-services")
 
 }
 
@@ -28,24 +29,24 @@ android {
     buildTypes {
         debug {
             debuggable = true
-            applicationIdSuffix '.debug'
+            //applicationIdSuffix '.debug'
             minifyEnabled false
             buildConfigField("String", "API_KEY", '"abc123456"')
-            buildConfigField("String", "API_URL", '"https://exampledebug.com"')
+            buildConfigField("String", "API_URL", '"https://api.coinpaprika.com/"')
         }
         tst {
             debuggable = true
-            applicationIdSuffix '.tst'
+            //applicationIdSuffix '.tst'
             minifyEnabled false
             buildConfigField("String", "API_KEY", '"abc123456"')
-            buildConfigField("String", "API_URL", '"https://exampledebug.com"')
+            buildConfigField("String", "API_URL", '"https://api.coinpaprika.com/"')
         }
         release {
             debuggable = false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "API_KEY", '"abc123456"')
-            buildConfigField("String", "API_URL", '"https://exampledebug.com"')
+            buildConfigField("String", "API_URL", '"https://api.coinpaprika.com/"')
         }
     }
     compileOptions {
@@ -61,8 +62,11 @@ dependencies {
 
     implementation libs.retrofit
     implementation libs.converter.gson
+    implementation libs.gson
     implementation libs.okhttp
     implementation libs.hilt.android
+    implementation libs.play.services.auth
+    implementation libs.androidx.swiperefreshlayout
     kapt libs.hilt.compiler
     implementation libs.core.ktx
     implementation libs.appcompat
@@ -72,6 +76,9 @@ dependencies {
     androidTestImplementation libs.espresso.core
     implementation libs.glide.v431
     implementation libs.firebase.auth
+    implementation libs.firebase.core
+    implementation libs.adapter.rxjava2
+    implementation libs.circleimageview
 
 }
 

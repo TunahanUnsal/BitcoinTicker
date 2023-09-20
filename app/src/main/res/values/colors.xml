@@ -10,4 +10,5 @@
     <color name="gold">#FFEE9926</color>
     <color name="blue">#FF01294A</color>
     <color name="text_color">#FFF4F2F0</color>
+    <color name="transparent">#00000000</color>
 </resources>

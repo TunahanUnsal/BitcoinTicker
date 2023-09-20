@@ -7,14 +7,17 @@
     <application
         android:name="com.example.project.ExampleApplication"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TempleteProject"
-        tools:targetApi="31">
+        tools:targetApi="tiramisu">
 
         <activity
             android:name=".ui.login.LoginActivity"
@@ -26,6 +29,8 @@
         </activity>
 
         <activity android:name=".ui.home.HomeActivity" />
+        <activity android:name=".ui.list.ListActivity" />
+        <activity android:name=".ui.detail.DetailActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

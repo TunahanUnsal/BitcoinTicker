@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "142751700702",
+    "project_id": "cointracer-557f7",
+    "storage_bucket": "cointracer-557f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142751700702:android:43caa4c3b62c98abc6944f",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142751700702-hb78ld98q0mhk2bp5sfkst3e8kphqg6m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.project",
+            "certificate_hash": "319390fe2cffa264f465cb00df5470916cb939d1"
+          }
+        },
+        {
+          "client_id": "142751700702-8apm12psta9vbrdpjkoare34hjr0pmm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUrtfe6VwXpC-wpnYwalDoGMupBsvdMN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142751700702-8apm12psta9vbrdpjkoare34hjr0pmm9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

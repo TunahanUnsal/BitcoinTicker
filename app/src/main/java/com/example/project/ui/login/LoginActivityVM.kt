@@ -1,19 +1,15 @@
 package com.example.project.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.project.domain.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 private const val TAG: String = "LoginActivityVM"
 
 @HiltViewModel
-class LoginActivityVM @Inject constructor(private val loginUseCase: LoginUseCase) : ViewModel() {
+class LoginActivityVM @Inject constructor() : ViewModel() {
 
-    private suspend fun loginFun() {
+   /* private suspend fun loginFun() {
         loginUseCase.invoke(
             LoginUseCase.Params(
                 username = "",
@@ -26,6 +22,5 @@ class LoginActivityVM @Inject constructor(private val loginUseCase: LoginUseCase
         }.collect {
             Log.i(TAG, "loginFun: collect $it")
         }
-    }
-
+    }*/
 }

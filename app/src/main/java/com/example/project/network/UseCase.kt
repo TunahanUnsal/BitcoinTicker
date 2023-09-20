@@ -3,7 +3,7 @@ package com.example.project.network
 import kotlinx.coroutines.flow.Flow
 
 abstract class UseCase<P, R> {
-    operator fun invoke(params: P): Flow<R> = execute(params)
+    operator fun invoke(parameter: P?): Flow<R> = execute(parameter)
 
-    protected abstract fun execute(params: P): Flow<R>
+    protected abstract fun execute(parameter: P?): Flow<R>
 }
