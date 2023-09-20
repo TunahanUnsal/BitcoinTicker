@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_bottom">30dp</dimen>
+    <dimen name="margin_top">36dp</dimen>
+    <dimen name="margin_start_detail">52dp</dimen>
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_middle">18sp</dimen>
-    <dimen name="text_large">22sp</dimen>
+    <dimen name="text_large">36sp</dimen>
     <dimen name="margin_start">8dp</dimen>
     <dimen name="margin_start_list_item">15dp</dimen>
     <dimen name="margin_start_edittext">18dp</dimen>

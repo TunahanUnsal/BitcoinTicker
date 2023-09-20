@@ -1,6 +1,8 @@
 package com.example.project.ui.adapter
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +13,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project.R
 import com.example.project.repository.coinService.reqres.Coin
+import com.example.project.ui.detail.DetailActivity
 
 
-class CoinListAdapter(private val coinList: ArrayList<Coin>) :
+class CoinListAdapter(private val coinList: ArrayList<Coin>,private val activity: Activity) :
     RecyclerView.Adapter<CoinListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,7 +26,7 @@ class CoinListAdapter(private val coinList: ArrayList<Coin>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(coinList[position])
+        holder.bindItems(coinList[position],activity)
         holder.itemView.findViewById<ConstraintLayout>(R.id.view_general).startAnimation(AnimationUtils.loadAnimation(holder.itemView.context,R.anim.item_animation_fall_down))
     }
 
@@ -34,7 +37,7 @@ class CoinListAdapter(private val coinList: ArrayList<Coin>) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("SetTextI18n")
-        fun bindItems(coin: Coin) {
+        fun bindItems(coin: Coin,activity:Activity) {
 
             Log.i("TAG", "bindItems: $coin")
 
@@ -47,6 +50,12 @@ class CoinListAdapter(private val coinList: ArrayList<Coin>) :
             symbolTextView.text = coin.symbol.toString()
             nameTextView.text = coin.name.toString()
             typeTextView.text = coin.type.toString()
+
+            itemView.setOnClickListener {
+                val intent = Intent(activity, DetailActivity::class.java)
+                intent.putExtra("name", coin.id)
+                activity.startActivity(intent)
+            }
 
 
         }

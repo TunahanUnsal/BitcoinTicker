@@ -58,12 +58,13 @@ class ListActivityVM @Inject constructor(private val coinListUseCase: CoinListUs
 
     private fun setList(recyclerView: RecyclerView, activity: Activity) {
         activity.runOnUiThread {
-            coinListAdapter = CoinListAdapter(tempCoinList)
+            coinListAdapter = CoinListAdapter(tempCoinList,activity)
             recyclerView.layoutManager = LinearLayoutManager(activity);
             recyclerView.post {
                 recyclerView.adapter = coinListAdapter
                 recyclerView.itemAnimator = CustomItemAnimator()
             }
+
         }
     }
 

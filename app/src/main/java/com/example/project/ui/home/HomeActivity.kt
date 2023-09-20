@@ -24,7 +24,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var viewModel: HomeActivityVM
     private lateinit var authFirebase: FirebaseAuth
 
-    private val RC_SIGN_IN = 2  // Can be any integer unique to the Activity
+    private val RC_SIGN_IN = 2
     private var showOneTapUI = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,11 +51,10 @@ class HomeActivity : AppCompatActivity() {
             .build()
 
 
-        binding.signInButton.setOnClickListener {
+        binding.googleButton.setOnClickListener {
             val googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
             startActivityForResult(googleSignInClient.signInIntent, RC_SIGN_IN)
         }
-
 
     }
 
@@ -65,7 +64,6 @@ class HomeActivity : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign-In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 if (account != null) {
                     account.idToken?.let { firebaseAuthWithGoogle(it) }

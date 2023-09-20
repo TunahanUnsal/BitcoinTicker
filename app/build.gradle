@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace 'com.example.project'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.project"
         minSdk 24
-        targetSdk 34
+        targetSdk 33
         versionCode 2
         versionName "1.0.1"
 
@@ -79,6 +79,9 @@ dependencies {
     implementation libs.firebase.core
     implementation libs.adapter.rxjava2
     implementation libs.circleimageview
+    implementation ('com.github.ybq:Android-SpinKit:1.4.0')
+    implementation ('com.github.TutorialsAndroid:GButton:v1.0.19')
+
 
 }
 

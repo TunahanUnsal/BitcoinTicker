@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
-    android:background="@color/blue"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.Guideline
@@ -22,55 +21,113 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:transitionName="fade"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:contentDescription="@android:string/ok"
         android:src="@drawable/login_image"
-        app:layout_constraintBottom_toTopOf="@+id/signInButton"
+        android:transitionName="fade"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_small"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        android:text="@string/powered_by" />
+        tool:text="1350$"
+        android:textSize="@dimen/text_large"
+        android:layout_marginTop="@dimen/margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:contentDescription="@android:string/ok"
-        android:src="@drawable/loodos"
-        android:layout_marginBottom="@dimen/margin_bottom"
-        app:layout_constraintBottom_toTopOf="@+id/version_text"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/signInButton"
-        android:layout_width="300dp"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="@dimen/margin_top"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/price">
 
-    <TextView
-        android:id="@+id/version_text"
-        android:layout_width="wrap_content"
+        <TextView
+            android:layout_marginStart="@dimen/margin_start"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/algorithm"
+            android:textSize="@dimen/text_middle" />
+
+        <TextView
+            android:id="@+id/algorithm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_start"
+            android:textSize="@dimen/text_middle"
+            tool:text="SHA256" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_small"
-        android:layout_marginBottom="@dimen/margin_bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        tool:text="V1.0.0" />
+        android:layout_marginTop="@dimen/margin_top_list_item"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_price"
+            android:textSize="@dimen/text_middle" />
+
+        <TextView
+            android:id="@+id/price_change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:textSize="@dimen/text_middle"
+            tool:text="value" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_list_item"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <TextView
+            android:layout_marginStart="@dimen/margin_start"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/description"
+            android:textSize="@dimen/text_middle" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_start"
+            android:textSize="@dimen/text_middle"
+            tool:text="value" />
+
+
+    </LinearLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

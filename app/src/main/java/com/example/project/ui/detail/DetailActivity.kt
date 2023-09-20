@@ -23,9 +23,25 @@ class DetailActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[DetailActivityVM::class.java]
         setContentView(binding.root)
 
+        val name: String = intent.getStringExtra("name").toString()
+
+
         CoroutineScope(Dispatchers.IO).launch {
             val response = async {
-                viewModel.coinDetailFun()
+                viewModel.coinDetailFun(
+                    this@DetailActivity,
+                    applicationContext,
+                    name,
+                    binding.algorithm,
+                    binding.description,
+                    binding.imageView
+                )
+                viewModel.priceDetailFun(
+                    this@DetailActivity,
+                    name,
+                    binding.price,
+                    binding.priceChange
+                )
             }
             response.await()
         }

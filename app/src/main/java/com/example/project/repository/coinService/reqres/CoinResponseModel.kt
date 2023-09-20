@@ -83,3 +83,16 @@ data class Whitepaper(
     @SerializedName("thumbnail") var thumbnail: String? = null
 
 )
+
+data class PriceModel(
+
+    @SerializedName("time_open") var timeOpen: String? = null,
+    @SerializedName("time_close") var timeClose: String? = null,
+    @SerializedName("open") var open: Double? = null,
+    @SerializedName("high") var high: Double? = null,
+    @SerializedName("low") var low: Double? = null,
+    @SerializedName("close") var close: Double? = null,
+    @SerializedName("volume") var volume: Int? = null,
+    @SerializedName("market_cap") var marketCap: Int? = null
+
+)
