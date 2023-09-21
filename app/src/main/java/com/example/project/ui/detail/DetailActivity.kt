@@ -24,11 +24,12 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val name: String = intent.getStringExtra("name").toString()
+        val id: String = intent.getStringExtra("id").toString()
         val type: String = intent.getStringExtra("type").toString()
         val rank: String = intent.getStringExtra("rank").toString()
         val symbol: String = intent.getStringExtra("symbol").toString()
 
-        viewModel.favClicked(this@DetailActivity,binding.fav,name,symbol, rank, type)
+        viewModel.favClicked(this@DetailActivity,binding.fav,name,symbol, rank, type,id)
 
         viewModel.funControlFireStore(name,this@DetailActivity,binding.fav)
 
@@ -38,7 +39,7 @@ class DetailActivity : AppCompatActivity() {
                 viewModel.coinDetailFun(
                     this@DetailActivity,
                     applicationContext,
-                    name,
+                    id,
                     binding.algorithm,
                     binding.description,
                     binding.imageView,
@@ -46,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
                 )
                 viewModel.priceDetailFun(
                     this@DetailActivity,
-                    name,
+                    id,
                     binding.price,
                     binding.priceChange
                 )
@@ -66,7 +67,7 @@ class DetailActivity : AppCompatActivity() {
                         viewModel.coinDetailFun(
                             this@DetailActivity,
                             applicationContext,
-                            name,
+                            id,
                             binding.algorithm,
                             binding.description,
                             binding.imageView,
@@ -74,7 +75,7 @@ class DetailActivity : AppCompatActivity() {
                         )
                         viewModel.priceDetailFun(
                             this@DetailActivity,
-                            name,
+                            id,
                             binding.price,
                             binding.priceChange
                         )

@@ -7,4 +7,6 @@
     <string name="algorithm">Hashing Algorithm : </string>
     <string name="change_price">Price Change Last 24 Hours : </string>
     <string name="description">Description : </string>
+    <string name="fav_active">Showing favorites</string>
+    <string name="fav_closed">Not Showing favorites</string>
 </resources>

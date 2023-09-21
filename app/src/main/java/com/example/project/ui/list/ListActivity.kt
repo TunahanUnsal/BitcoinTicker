@@ -32,26 +32,47 @@ class ListActivity : AppCompatActivity() {
             if(!viewModel.loadingFlag){
                 viewModel.loadingFlag = true
                 binding.searchEditText.text.clear()
-                CoroutineScope(Dispatchers.IO).launch {
-                    val response = async {
-                        viewModel.coinListFun(binding.coinListView, this@ListActivity)
+                if(!viewModel.fabMode){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val response = async {
+                            viewModel.coinListFun(binding.coinListView, this@ListActivity)
+                        }
+                        response.await()
+                        runOnUiThread {
+                            binding.swipeRefresh.isRefreshing = false
+                        }
+                        viewModel.loadingFlag = false
                     }
-                    response.await()
+                }else{
                     runOnUiThread {
                         binding.swipeRefresh.isRefreshing = false
                     }
+                    viewModel.funGetFavoritesFromServer()
                     viewModel.loadingFlag = false
                 }
+
             }
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            viewModel.loadingFlag = true
-            val response = async {
-                viewModel.coinListFun(binding.coinListView, this@ListActivity)
+        binding.fab.setOnClickListener {
+            viewModel.fabClicked(this@ListActivity,binding.root,binding.fab)
+        }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if(!viewModel.fabMode){
+            CoroutineScope(Dispatchers.IO).launch {
+                viewModel.loadingFlag = true
+                val response = async {
+                    viewModel.coinListFun(binding.coinListView, this@ListActivity)
+                }
+                response.await()
+                viewModel.loadingFlag = false
             }
-            response.await()
-            viewModel.loadingFlag = false
+        }else{
+            viewModel.funGetFavoritesFromServer()
         }
 
     }

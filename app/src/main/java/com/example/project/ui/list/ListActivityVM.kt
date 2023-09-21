@@ -12,17 +12,22 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.project.R
 import com.example.project.domain.coin.CoinListUseCase
 import com.example.project.repository.coinService.reqres.Coin
 import com.example.project.ui.adapter.CoinListAdapter
 import com.example.project.util.CustomItemAnimator
+import com.example.project.util.UiUtil
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import java.util.Locale
 import javax.inject.Inject
 
-
+@SuppressLint("NotifyDataSetChanged")
 @HiltViewModel
 class ListActivityVM @Inject constructor(private val coinListUseCase: CoinListUseCase) :
     ViewModel() {
@@ -30,8 +35,10 @@ class ListActivityVM @Inject constructor(private val coinListUseCase: CoinListUs
     private lateinit var coinListAdapter: CoinListAdapter
     private var coinList: ArrayList<Coin> = ArrayList()
     private var tempCoinList: ArrayList<Coin> = ArrayList()
+    private var favCoinList: ArrayList<Coin> = ArrayList()
 
     var loadingFlag = false
+    var fabMode = false
 
     suspend fun coinListFun(recyclerView: RecyclerView, activity: Activity) {
         coinListUseCase.invoke(
@@ -58,7 +65,7 @@ class ListActivityVM @Inject constructor(private val coinListUseCase: CoinListUs
 
     private fun setList(recyclerView: RecyclerView, activity: Activity) {
         activity.runOnUiThread {
-            coinListAdapter = CoinListAdapter(tempCoinList,activity)
+            coinListAdapter = CoinListAdapter(tempCoinList, activity)
             recyclerView.layoutManager = LinearLayoutManager(activity);
             recyclerView.post {
                 recyclerView.adapter = coinListAdapter
@@ -108,7 +115,7 @@ class ListActivityVM @Inject constructor(private val coinListUseCase: CoinListUs
 
             override fun afterTextChanged(s: Editable?) {
                 val searchText = s.toString().trim().lowercase(Locale.ROOT)
-                if(!loadingFlag){
+                if (!loadingFlag) {
                     searchItems(searchText)
                 }
             }
@@ -119,9 +126,85 @@ class ListActivityVM @Inject constructor(private val coinListUseCase: CoinListUs
     private fun searchItems(query: String) {
 
         tempCoinList.clear()
-        tempCoinList.addAll(coinList.filter { it.name?.lowercase(Locale.ROOT)?.contains(query) ?: false})
+        if (!fabMode) {
+            tempCoinList.addAll(coinList.filter {
+                it.name?.lowercase(Locale.ROOT)?.contains(query) ?: false
+            })
+        } else {
+            tempCoinList.addAll(favCoinList.filter {
+                it.name?.lowercase(Locale.ROOT)?.contains(query) ?: false
+            })
+        }
+
         coinListAdapter.notifyDataSetChanged()
 
     }
+
+    fun fabClicked(
+        activity: Activity,
+        parentView: View,
+        floatingActionButton: FloatingActionButton,
+    ) {
+        floatingActionButton.setOnClickListener {
+            if (!fabMode) {
+                fabMode = true
+                funGetFavoritesFromServer()
+                activity.runOnUiThread {
+                    floatingActionButton.setImageResource(R.drawable.favorite_on)
+                    UiUtil.showSnackBar(
+                        parentView, activity.getString(R.string.fav_active)
+                    )
+                }
+            } else {
+                fabMode = false
+                favModDeactivator()
+                activity.runOnUiThread {
+                    floatingActionButton.setImageResource(R.drawable.favorite_off)
+                    UiUtil.showSnackBar(
+                        parentView, activity.getString(R.string.fav_closed)
+                    )
+                }
+            }
+
+        }
+    }
+
+    fun funGetFavoritesFromServer() {
+        favCoinList.clear()
+        val fireStoreDatabase = FirebaseFirestore.getInstance()
+        if (FirebaseAuth.getInstance().uid != null) {
+            fireStoreDatabase.collection(FirebaseAuth.getInstance().uid!!).get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        favCoinList.add(
+                            Coin(
+                                id = document.get("id").toString(),
+                                name = document.get("name").toString(),
+                                symbol = document.get("symbol").toString(),
+                                rank = document.get("rank").toString().toInt(),
+                                type = document.get("type").toString()
+                            )
+                        )
+                    }
+                    favModActivator()
+
+                }
+        }
+
+    }
+
+
+    private fun favModActivator() {
+        tempCoinList.clear()
+        tempCoinList.addAll(favCoinList)
+        coinListAdapter.notifyDataSetChanged()
+    }
+
+    private fun favModDeactivator() {
+        tempCoinList.clear()
+        tempCoinList.addAll(coinList)
+        coinListAdapter.notifyDataSetChanged()
+    }
+
 
 }

@@ -32,19 +32,19 @@ class DetailActivityVM @Inject constructor(
 ) : ViewModel() {
 
     var loadingFlag: Boolean = false
-    var favClicked: Boolean = false
+    private var favClicked: Boolean = false
 
     suspend fun coinDetailFun(
         activity: Activity,
         context: Context,
-        name: String,
+        id: String,
         algorithm: TextView,
         description: TextView,
         imageView: ImageView,
         swipeRefreshLayout: SwipeRefreshLayout
     ) {
         coinByIdUseCase.invoke(
-            parameter = name
+            parameter = id
         ).onStart {
             Log.i("TAG", "coinDetailFun: onStart")
             activity.runOnUiThread {
@@ -71,12 +71,12 @@ class DetailActivityVM @Inject constructor(
 
     suspend fun priceDetailFun(
         activity: Activity,
-        name: String,
+        id: String,
         price: TextView,
         change: TextView
     ) {
         priceByIdUseCase.invoke(
-            parameter = name
+            parameter = id
         ).onStart {
             Log.i("TAG", "coinDetailFun: onStart")
         }.catch {
@@ -135,7 +135,8 @@ class DetailActivityVM @Inject constructor(
         name: String,
         symbol: String,
         rank: String,
-        type: String
+        type: String,
+        id: String
     ) {
         imageView.setOnClickListener {
             if (!favClicked) {
@@ -143,7 +144,7 @@ class DetailActivityVM @Inject constructor(
                 activity.runOnUiThread {
                     imageView.setImageResource(R.drawable.favorite_on)
                 }
-                addFileStore(name, symbol, rank, type)
+                addFileStore(id,name, symbol, rank, type)
             } else {
                 favClicked = false
                 activity.runOnUiThread {
@@ -171,13 +172,14 @@ class DetailActivityVM @Inject constructor(
 
     }
 
-    private fun addFileStore(name: String, symbol: String, rank: String, type: String) {
+    private fun addFileStore(id: String, name: String, symbol: String, rank: String, type: String) {
         val fireStoreDatabase = FirebaseFirestore.getInstance()
 
         val hashMap = hashMapOf<String, Any>(
+            "id" to id,
             "name" to name,
             "symbol" to symbol,
-            "rank" to "#$rank",
+            "rank" to rank,
             "type" to type
         )
 
@@ -194,22 +196,23 @@ class DetailActivityVM @Inject constructor(
 
     private fun removeFileStore(name: String) {
         val fireStoreDatabase = FirebaseFirestore.getInstance()
-        val itemsRef: CollectionReference =
-            fireStoreDatabase.collection(FirebaseAuth.getInstance().uid!!)
-        val query: Query = itemsRef.whereEqualTo("name", name)
-        query.get().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                for (document in task.result) {
-                    itemsRef.document(document.id).delete().addOnSuccessListener {
-                        Log.d("TAG", "Removed document")
-                    }.addOnFailureListener {
-                        Log.d("TAG", "Failed")
+        if (FirebaseAuth.getInstance().uid != null) {
+            val itemsRef: CollectionReference =
+                fireStoreDatabase.collection(FirebaseAuth.getInstance().uid!!)
+            val query: Query = itemsRef.whereEqualTo("name", name)
+            query.get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) {
+                        itemsRef.document(document.id).delete().addOnSuccessListener {
+                            Log.d("TAG", "Removed document")
+                        }.addOnFailureListener {
+                            Log.d("TAG", "Failed")
+                        }
                     }
+                } else {
+                    Log.d("TAG", "Error getting documents: ", task.exception)
                 }
-            } else {
-                Log.d("TAG", "Error getting documents: ", task.exception)
             }
         }
-
     }
 }

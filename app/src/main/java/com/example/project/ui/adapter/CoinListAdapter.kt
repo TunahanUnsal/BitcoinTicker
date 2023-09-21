@@ -58,7 +58,8 @@ class CoinListAdapter(private val coinList: ArrayList<Coin>, private val activit
 
             itemView.setOnClickListener {
                 val intent = Intent(activity, DetailActivity::class.java).setAction("")
-                intent.putExtra("name", coin.id)
+                intent.putExtra("id", coin.id)
+                intent.putExtra("name", coin.name)
                 intent.putExtra("type", coin.type)
                 intent.putExtra("rank", coin.rank.toString())
                 intent.putExtra("symbol", coin.symbol)
