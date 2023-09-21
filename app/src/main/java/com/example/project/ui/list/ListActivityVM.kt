@@ -37,14 +37,14 @@ class ListActivityVM @Inject constructor(private val coinListUseCase: CoinListUs
         coinListUseCase.invoke(
             parameter = null
         ).onStart {
-            Log.i("TAG", "loginFun: onStart")
+            Log.i("TAG", "coinListFun: onStart")
             loadingFlag = true
         }.catch {
-            Log.i("TAG", "loginFun: catch $it")
+            Log.i("TAG", "coinListFun: catch $it")
             loadingFlag = false
         }.collect {
             loadingFlag = false
-            Log.i("TAG", "loginFun: collect ${it.body()}")
+            Log.i("TAG", "coinListFun: collect ${it.body()}")
             val list: ArrayList<Coin>? = it.body() as ArrayList<Coin>?
             Log.i("TAG", "coinListFun: ${list?.get(0)?.id}")
             coinList.clear()

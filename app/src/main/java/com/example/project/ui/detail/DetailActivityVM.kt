@@ -15,6 +15,10 @@ import com.example.project.domain.coin.CoinByIdUseCase
 import com.example.project.domain.coin.PriceByIdUseCase
 import com.example.project.repository.coinService.reqres.CoinDetail
 import com.example.project.repository.coinService.reqres.PriceModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
@@ -26,6 +30,9 @@ class DetailActivityVM @Inject constructor(
     private val coinByIdUseCase: CoinByIdUseCase,
     private val priceByIdUseCase: PriceByIdUseCase
 ) : ViewModel() {
+
+    var loadingFlag: Boolean = false
+    var favClicked: Boolean = false
 
     suspend fun coinDetailFun(
         activity: Activity,
@@ -39,12 +46,12 @@ class DetailActivityVM @Inject constructor(
         coinByIdUseCase.invoke(
             parameter = name
         ).onStart {
-            Log.i("TAG", "loginFun: onStart")
+            Log.i("TAG", "coinDetailFun: onStart")
             activity.runOnUiThread {
                 swipeRefreshLayout.isRefreshing = true
             }
         }.catch {
-            Log.i("TAG", "loginFun: catch $it")
+            Log.i("TAG", "coinDetailFun: catch $it")
             activity.runOnUiThread {
                 swipeRefreshLayout.isRefreshing = false
             }
@@ -52,12 +59,12 @@ class DetailActivityVM @Inject constructor(
             activity.runOnUiThread {
                 swipeRefreshLayout.isRefreshing = false
             }
-            Log.i("TAG", "loginFun: collect $it")
+            Log.i("TAG", "coinDetailFun: collect $it")
             uiSetterCoin(activity, it, algorithm, description)
-            if(it.logo!=null){
-                imageSetter(it.logo!!,imageView,context,activity)
-            }else{
-                imageSetter("",imageView,context,activity)
+            if (it.logo != null) {
+                imageSetter(it.logo!!, imageView, context, activity)
+            } else {
+                imageSetter("", imageView, context, activity)
             }
         }
     }
@@ -71,11 +78,11 @@ class DetailActivityVM @Inject constructor(
         priceByIdUseCase.invoke(
             parameter = name
         ).onStart {
-            Log.i("TAG", "loginFun: onStart")
+            Log.i("TAG", "coinDetailFun: onStart")
         }.catch {
-            Log.i("TAG", "loginFun: catch $it")
+            Log.i("TAG", "coinDetailFun: catch $it")
         }.collect {
-            Log.i("TAG", "loginFun: collect $it")
+            Log.i("TAG", "coinDetailFun: collect $it")
             it.body()?.get(0)?.let { it1 -> uiSetterPrice(activity, it1, price, change) }
         }
     }
@@ -100,14 +107,19 @@ class DetailActivityVM @Inject constructor(
         change: TextView
     ) {
         activity.runOnUiThread {
-            price.text =  "%.2f".format( priceDetail.close) + "$"
+            price.text = "%.2f".format(priceDetail.close) + "$"
             if (priceDetail.high != null && priceDetail.low != null) {
                 change.text = "%.2f".format(priceDetail.high!!.minus(priceDetail.low!!)) + "$"
             }
         }
     }
 
-    private fun imageSetter(url: String, imageView: ImageView, context: Context,activity: Activity) {
+    private fun imageSetter(
+        url: String,
+        imageView: ImageView,
+        context: Context,
+        activity: Activity
+    ) {
         val options: RequestOptions = RequestOptions()
             .centerCrop()
             .error(R.drawable.binance)
@@ -115,5 +127,89 @@ class DetailActivityVM @Inject constructor(
         activity.runOnUiThread {
             Glide.with(context).load(url).apply(options).into(imageView)
         }
+    }
+
+    fun favClicked(
+        activity: Activity,
+        imageView: ImageView,
+        name: String,
+        symbol: String,
+        rank: String,
+        type: String
+    ) {
+        imageView.setOnClickListener {
+            if (!favClicked) {
+                favClicked = true
+                activity.runOnUiThread {
+                    imageView.setImageResource(R.drawable.favorite_on)
+                }
+                addFileStore(name, symbol, rank, type)
+            } else {
+                favClicked = false
+                activity.runOnUiThread {
+                    imageView.setImageResource(R.drawable.favorite_off)
+                }
+                removeFileStore(name)
+            }
+        }
+    }
+
+    fun funControlFireStore(name: String, activity: Activity, imageView: ImageView) {
+        val fireStoreDatabase = FirebaseFirestore.getInstance()
+        fireStoreDatabase.collection(FirebaseAuth.getInstance().uid!!).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    if (document.get("name")?.equals(name) == true) {
+                        favClicked = true
+                        activity.runOnUiThread {
+                            imageView.setImageResource(R.drawable.favorite_on)
+                        }
+                    }
+                }
+
+            }
+
+    }
+
+    private fun addFileStore(name: String, symbol: String, rank: String, type: String) {
+        val fireStoreDatabase = FirebaseFirestore.getInstance()
+
+        val hashMap = hashMapOf<String, Any>(
+            "name" to name,
+            "symbol" to symbol,
+            "rank" to "#$rank",
+            "type" to type
+        )
+
+        fireStoreDatabase.collection(FirebaseAuth.getInstance().uid!!)
+            .add(hashMap)
+            .addOnSuccessListener {
+                Log.d("TAG", "Added document with ID ${it.id}")
+            }
+            .addOnFailureListener { exception ->
+                Log.w("TAG", "Error adding document $exception")
+            }
+
+    }
+
+    private fun removeFileStore(name: String) {
+        val fireStoreDatabase = FirebaseFirestore.getInstance()
+        val itemsRef: CollectionReference =
+            fireStoreDatabase.collection(FirebaseAuth.getInstance().uid!!)
+        val query: Query = itemsRef.whereEqualTo("name", name)
+        query.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                for (document in task.result) {
+                    itemsRef.document(document.id).delete().addOnSuccessListener {
+                        Log.d("TAG", "Removed document")
+                    }.addOnFailureListener {
+                        Log.d("TAG", "Failed")
+                    }
+                }
+            } else {
+                Log.d("TAG", "Error getting documents: ", task.exception)
+            }
+        }
+
     }
 }

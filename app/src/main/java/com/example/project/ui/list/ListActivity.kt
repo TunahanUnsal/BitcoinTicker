@@ -29,24 +29,29 @@ class ListActivity : AppCompatActivity() {
         viewModel.search(binding.searchEditText)
 
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.loadingFlag = true
-            binding.searchEditText.text.clear()
-            CoroutineScope(Dispatchers.IO).launch {
-                val response = async {
-                    viewModel.coinListFun(binding.coinListView, this@ListActivity)
-                }
-                response.await()
-                runOnUiThread {
-                    binding.swipeRefresh.isRefreshing = false
+            if(!viewModel.loadingFlag){
+                viewModel.loadingFlag = true
+                binding.searchEditText.text.clear()
+                CoroutineScope(Dispatchers.IO).launch {
+                    val response = async {
+                        viewModel.coinListFun(binding.coinListView, this@ListActivity)
+                    }
+                    response.await()
+                    runOnUiThread {
+                        binding.swipeRefresh.isRefreshing = false
+                    }
+                    viewModel.loadingFlag = false
                 }
             }
         }
 
         CoroutineScope(Dispatchers.IO).launch {
+            viewModel.loadingFlag = true
             val response = async {
                 viewModel.coinListFun(binding.coinListView, this@ListActivity)
             }
             response.await()
+            viewModel.loadingFlag = false
         }
 
     }

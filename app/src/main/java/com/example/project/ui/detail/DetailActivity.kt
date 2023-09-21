@@ -24,8 +24,16 @@ class DetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val name: String = intent.getStringExtra("name").toString()
+        val type: String = intent.getStringExtra("type").toString()
+        val rank: String = intent.getStringExtra("rank").toString()
+        val symbol: String = intent.getStringExtra("symbol").toString()
+
+        viewModel.favClicked(this@DetailActivity,binding.fav,name,symbol, rank, type)
+
+        viewModel.funControlFireStore(name,this@DetailActivity,binding.fav)
 
         CoroutineScope(Dispatchers.IO).launch {
+            viewModel.loadingFlag = true
             val response = async {
                 viewModel.coinDetailFun(
                     this@DetailActivity,
@@ -47,34 +55,37 @@ class DetailActivity : AppCompatActivity() {
             runOnUiThread {
                 binding.swipeRefresh.isRefreshing = false
             }
+            viewModel.loadingFlag = false
         }
 
         binding.swipeRefresh.setOnRefreshListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                val response = async {
-                    viewModel.coinDetailFun(
-                        this@DetailActivity,
-                        applicationContext,
-                        name,
-                        binding.algorithm,
-                        binding.description,
-                        binding.imageView,
-                        binding.swipeRefresh
-                    )
-                    viewModel.priceDetailFun(
-                        this@DetailActivity,
-                        name,
-                        binding.price,
-                        binding.priceChange
-                    )
-                }
-                response.await()
-                runOnUiThread {
-                    binding.swipeRefresh.isRefreshing = false
+            if(!viewModel.loadingFlag){
+                viewModel.loadingFlag = true
+                CoroutineScope(Dispatchers.IO).launch {
+                    val response = async {
+                        viewModel.coinDetailFun(
+                            this@DetailActivity,
+                            applicationContext,
+                            name,
+                            binding.algorithm,
+                            binding.description,
+                            binding.imageView,
+                            binding.swipeRefresh
+                        )
+                        viewModel.priceDetailFun(
+                            this@DetailActivity,
+                            name,
+                            binding.price,
+                            binding.priceChange
+                        )
+                    }
+                    response.await()
+                    runOnUiThread {
+                        binding.swipeRefresh.isRefreshing = false
+                    }
+                    viewModel.loadingFlag = false
                 }
             }
-
-
         }
     }
 

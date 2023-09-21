@@ -16,7 +16,7 @@ import com.example.project.repository.coinService.reqres.Coin
 import com.example.project.ui.detail.DetailActivity
 
 
-class CoinListAdapter(private val coinList: ArrayList<Coin>,private val activity: Activity) :
+class CoinListAdapter(private val coinList: ArrayList<Coin>, private val activity: Activity) :
     RecyclerView.Adapter<CoinListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,8 +26,13 @@ class CoinListAdapter(private val coinList: ArrayList<Coin>,private val activity
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItems(coinList[position],activity)
-        holder.itemView.findViewById<ConstraintLayout>(R.id.view_general).startAnimation(AnimationUtils.loadAnimation(holder.itemView.context,R.anim.item_animation_fall_down))
+        holder.bindItems(coinList[position], activity)
+        holder.itemView.findViewById<ConstraintLayout>(R.id.view_general).startAnimation(
+            AnimationUtils.loadAnimation(
+                holder.itemView.context,
+                R.anim.item_animation_fall_down
+            )
+        )
     }
 
     override fun getItemCount(): Int {
@@ -37,7 +42,7 @@ class CoinListAdapter(private val coinList: ArrayList<Coin>,private val activity
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("SetTextI18n")
-        fun bindItems(coin: Coin,activity:Activity) {
+        fun bindItems(coin: Coin, activity: Activity) {
 
             Log.i("TAG", "bindItems: $coin")
 
@@ -52,8 +57,11 @@ class CoinListAdapter(private val coinList: ArrayList<Coin>,private val activity
             typeTextView.text = coin.type.toString()
 
             itemView.setOnClickListener {
-                val intent = Intent(activity, DetailActivity::class.java)
+                val intent = Intent(activity, DetailActivity::class.java).setAction("")
                 intent.putExtra("name", coin.id)
+                intent.putExtra("type", coin.type)
+                intent.putExtra("rank", coin.rank.toString())
+                intent.putExtra("symbol", coin.symbol)
                 activity.startActivity(intent)
             }
 

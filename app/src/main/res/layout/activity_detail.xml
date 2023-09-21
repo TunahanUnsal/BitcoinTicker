@@ -25,6 +25,16 @@
             app:layout_constraintGuide_percent="0.85" />
 
         <ImageView
+            android:id="@+id/fav"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/margin_start_detail"
+            android:contentDescription="@android:string/ok"
+            android:src="@drawable/favorite_off"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/imageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
