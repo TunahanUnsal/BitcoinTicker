@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Templete Project"
+rootProject.name = "Coin Ticker"
 include ':app'
