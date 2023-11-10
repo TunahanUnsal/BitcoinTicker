@@ -33,26 +33,6 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/powered_by"
-        android:textSize="@dimen/text_small"
-        app:layout_constraintBottom_toTopOf="@+id/imageView2"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="@dimen/margin_bottom"
-        android:contentDescription="@android:string/ok"
-        android:src="@drawable/loodos"
-        app:layout_constraintBottom_toTopOf="@+id/version_text"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
 
     <com.developer.gbuttons.GoogleSignInButton
         android:id="@+id/google_button"
