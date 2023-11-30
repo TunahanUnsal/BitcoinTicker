@@ -8,17 +8,32 @@ plugins {
 }
 
 android {
-    namespace 'com.example.project'
+    namespace 'com.ezdream.project'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.project"
+        applicationId "com.ezdream.project"
         minSdk 24
         targetSdk 33
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 8
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs{
+        debug{
+            storeFile file("/Users/tunaunsal/Doc/private_key.pepk")
+            storePassword "789123"
+            keyAlias "ezdream"
+            keyPassword "789123"
+        }
+        release{
+            storeFile file("/Users/tunaunsal/Doc/private_key.pepk")
+            storePassword "789123"
+            keyAlias "ezdream"
+            keyPassword "789123"
+        }
     }
 
     buildFeatures{
@@ -29,22 +44,16 @@ android {
     buildTypes {
         debug {
             debuggable = true
-            //applicationIdSuffix '.debug'
+            applicationIdSuffix '.debug'
             minifyEnabled false
-            buildConfigField("String", "API_KEY", '"abc123456"')
-            buildConfigField("String", "API_URL", '"https://api.coinpaprika.com/"')
-        }
-        tst {
-            debuggable = true
-            //applicationIdSuffix '.tst'
-            minifyEnabled false
+            signingConfig signingConfigs.debug
             buildConfigField("String", "API_KEY", '"abc123456"')
             buildConfigField("String", "API_URL", '"https://api.coinpaprika.com/"')
         }
         release {
             debuggable = false
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
             buildConfigField("String", "API_KEY", '"abc123456"')
             buildConfigField("String", "API_URL", '"https://api.coinpaprika.com/"')
         }

@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/margin_top"
+        android:visibility="gone"
         app:fabSize="auto"
         android:contentDescription="@android:string/ok"
         android:src="@drawable/favorite_off"

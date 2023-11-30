@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.example.project.ExampleApplication"
+        android:name="com.ezdream.project.ExampleApplication"
         android:allowBackup="true"
         tools:ignore="LockedOrientationActivity"
         android:dataExtractionRules="@xml/data_extraction_rules"
