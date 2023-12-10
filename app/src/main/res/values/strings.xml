@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Coin Ticker</string>
+    <string name="app_name">Coin Scope</string>
     <string name="version">V</string>
     <string name="powered_by">Powered by</string>
     <string name="search_hint">Search Coin</string>
