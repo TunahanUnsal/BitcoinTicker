@@ -1,6 +1,6 @@
 # Coin Scope
 
-Play Store link: <https://play.google.com/store/apps/details?id=com.ezdream.project&hl=tr&gl=US>
+Play Store link: <https://play.google.com/store/apps/details?id=com.ezdream.project>
 
 * Kotlin 
 * MVVM 
